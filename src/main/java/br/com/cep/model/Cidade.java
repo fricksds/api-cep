@@ -1,16 +1,13 @@
 package br.com.cep.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "TCidade")
@@ -26,6 +23,7 @@ public class Cidade implements Serializable {
 
     private String localidade;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cidade", fetch = FetchType.LAZY)
     private List<Cep> ceps;
 
