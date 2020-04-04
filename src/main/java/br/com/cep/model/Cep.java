@@ -3,13 +3,14 @@ package br.com.cep.model;
 import br.com.cep.repository.CepRepository;
 import br.com.cep.util.ConnectionHttp;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 import org.json.JSONObject;
 
 @Entity
@@ -20,7 +21,8 @@ public class Cep implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String cep;
 
     private String logradouro;
@@ -29,7 +31,8 @@ public class Cep implements Serializable {
 
     private String bairro;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    @ManyToOne(cascade = CascadeType.ALL)
     private Cidade cidade;
 
     public Cep() {
@@ -40,6 +43,46 @@ public class Cep implements Serializable {
         this.logradouro = logradouro;
         this.complemento = complemento;
         this.bairro = bairro;
+        this.cidade = cidade;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
         this.cidade = cidade;
     }
 
@@ -76,8 +119,8 @@ public class Cep implements Serializable {
                     novaCidade);
 
             //novaCidade.getCeps().add(novoCEP);
-
-            cepRepository.save(novoCEP);
+            
+            // cepRepository.save(novoCEP);
 
             return novoCEP;
         }

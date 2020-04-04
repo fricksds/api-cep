@@ -4,9 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
+import org.springframework.web.util.UriUtils;
 
 /**
  *
@@ -21,7 +20,7 @@ public class ConnectionHttp {
      * @return string do json dos dados da ViaCep
      */
     public static String getHttpGET(String cep) {
-        String urlCep = "http://viacep.com.br/ws/" + cep + "/json/";
+        String urlCep = "http://viacep.com.br/ws/" + cep + "/json/unicode/";
         StringBuilder result = new StringBuilder();
 
         try {
@@ -32,7 +31,7 @@ public class ConnectionHttp {
             BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = rd.readLine()) != null) {
-                result.append(line);
+                result.append(UriUtils.decode(line, "ISO-8859-1"));
             }
 
         } catch (IOException ex) {
