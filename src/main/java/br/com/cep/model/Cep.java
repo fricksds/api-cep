@@ -5,12 +5,11 @@ import br.com.cep.util.ConnectionHttp;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 import org.json.JSONObject;
 
 @Entity
@@ -21,8 +20,6 @@ public class Cep implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String cep;
 
     private String logradouro;
@@ -31,8 +28,8 @@ public class Cep implements Serializable {
 
     private String bairro;
 
-    @JoinColumn
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ibge", referencedColumnName = "ibge")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Cidade cidade;
 
     public Cep() {
@@ -120,7 +117,7 @@ public class Cep implements Serializable {
 
             //novaCidade.getCeps().add(novoCEP);
             
-            // cepRepository.save(novoCEP);
+            cepRepository.save(novoCEP);
 
             return novoCEP;
         }
